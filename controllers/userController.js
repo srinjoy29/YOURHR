@@ -6,11 +6,11 @@ import { sendToken } from "../utils/jwtToken.js";
 export const register = catchAsyncErrors(async (req, res, next) => {
   const { name, email, phone, password, role } = req.body;
   if (!name || !email || !phone || !password || !role) {
-    return next(new ErrorHandler("Please fill full form!"));
+    return next(new ErrorHandler("Please fill full form !"));
   }
   const isEmail = await User.findOne({ email });
   if (isEmail) {
-    return next(new ErrorHandler("Email already registered!"));
+    return next(new ErrorHandler("Email already registered !"));
   }
   const user = await User.create({
     name,
@@ -19,13 +19,13 @@ export const register = catchAsyncErrors(async (req, res, next) => {
     password,
     role,
   });
-  sendToken(user, 201, res, "User Registered!");
+  sendToken(user, 201, res, "User Registered Sucessfully !");
 });
 
 export const login = catchAsyncErrors(async (req, res, next) => {
   const { email, password, role } = req.body;
   if (!email || !password || !role) {
-    return next(new ErrorHandler("Please provide email ,password and role."));
+    return next(new ErrorHandler("Please provide email ,password and role !"));
   }
   const user = await User.findOne({ email }).select("+password");
   if (!user) {
@@ -33,14 +33,14 @@ export const login = catchAsyncErrors(async (req, res, next) => {
   }
   const isPasswordMatched = await user.comparePassword(password);
   if (!isPasswordMatched) {
-    return next(new ErrorHandler("Invalid Email Or Password.", 400));
+    return next(new ErrorHandler("Invalid Email Or Password !", 400));
   }
   if (user.role !== role) {
     return next(
-      new ErrorHandler(`User with provided email and ${role} not found!`, 404)
+      new ErrorHandler(`User with provided email and ${role} not found !`, 404)
     );
   }
-  sendToken(user, 201, res, "User Logged In!");
+  sendToken(user, 201, res, "User Logged In Sucessfully !");
 });
 
 export const logout = catchAsyncErrors(async (req, res, next) => {
@@ -52,7 +52,7 @@ export const logout = catchAsyncErrors(async (req, res, next) => {
     })
     .json({
       success: true,
-      message: "Logged Out Successfully.",
+      message: "Logged Out Successfully !",
     });
 });
 
